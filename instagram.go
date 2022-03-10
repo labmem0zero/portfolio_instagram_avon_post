@@ -15,10 +15,8 @@ import (
 	"context"
 )
 
-func InstaStart(in string){
+func InstaStart(in string, login string, password string){
 	inS:=strings.Split(in, " ")
-	login:="instagram.login"
-	password:="instagram.password"
 	InstagramCheckLogin(login,password)
 	InstagramPostArray(InstaMakePostArray(inS))
 }

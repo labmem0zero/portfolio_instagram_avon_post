@@ -18,9 +18,11 @@ func nthChild(n *html.Node) int {
 	return i
 }
 
+//getSelector(n *html.Node) возвращает querySelector заданной html ноды
 func getSelector(n *html.Node) string {
 	if n.Parent != nil {
 		s := getSelector(n.Parent)
+		//nthChild(n *html.Node) возвращает n-ый номер текущей ноды среди всех сиблингов ноды
 		ss := n.Data + ":nth-child(" + strconv.Itoa(nthChild(n)) + ")"
 		if s != "" {
 			return s + ">" + ss
@@ -31,6 +33,7 @@ func getSelector(n *html.Node) string {
 	return ""
 }
 
+//Cooldown(near float64) time.Duration возвращает временной интервал с +-5% погрешностью, необходима для имитации человеческих действий
 func Cooldown(near float64) time.Duration{
 	zoom:=int(near/10)
 	x:=rand.Intn(zoom)+int(0.95*near)

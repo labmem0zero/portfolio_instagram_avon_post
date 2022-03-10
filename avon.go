@@ -18,11 +18,9 @@ import (
 	"context"
 )
 
-func AvonStart(){
-	avonlogin:="login"
-	avonpassword:="password"
+func AvonStart(login string, password string){
 
-	AVONLogin(avonlogin,avonpassword)
+	AVONLogin(login,password)
 	AVONNewOrder()
 	AVONLogOut()
 }

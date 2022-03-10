@@ -308,15 +308,17 @@ type InstaPost struct{
 func ShowCategory(cat string){
 	goodids:=DBGetCategoryGoods(cat)
 	for _,g:=range goodids{
-		ShowGood(DBGetGood(g))
+		ShowGood(g)
 	}
 }
 
-func ShowGood(good Good){
+func ShowGood(goodid string){
+	good:=DBGetGood(goodid)
 	fmt.Printf("--------------------------------\nКод товара: %v\nКатегория: %v\nНазвание товара: %v\nОписание товара: %v\nКаталог: %v\nСтраница: %v\nЦена: %v\nАдрес на сайте: %v\n", good.Good.Goodid,good.Good.Goodcategory,good.Good.Goodname,good.Good.Gooddescription,good.Good.Currentcat,good.Good.Currentcatpage,good.Good.Currentprice,good.Good.Goodurl)
 }
 
 func main(){
+	//DBStart() инициализирует БД
 	db=DBStart()
 	cookieDir = "cookie"
 	if _, err := os.Stat(cookieDir); os.IsNotExist(err) {
@@ -360,25 +362,39 @@ func main(){
 	}()
 	defer cancel2()
 	defer cancel1()
-	//получает товары текущего каталога и добавляет их в бд
-	AVONGetGoods()
-	//скачивает изображения всех страниц действующего каталога
+
+	//AVONGetGoods получает товары текущего каталога и добавляет их в бд, для использования раскомментировать
+	//Важно: при первом запуске необходимо выполнить эту функцию, что бы заполнить БД товарами
+	//AVONGetGoods()
+
+	//AVONGetCatImages скачивает изображения всех страниц действующего каталога
 	//AVONGetCatImages()
-	/*
-	//для запуска постинга нужны коды товаров из каталога
-	goddIDs:="1386829 1401001 1420694 94679 22375 1387176 1313782 1358737 1379088 49003 1457171 26640 1419764 14434 1441347 68782 20801 1409747 67604 1327226 1444822 1370547 1400305 1404669"
-	InstaStart(goddIDs)
-	*/
+
+	//goodIDs присваем список товаров, разделенных пробелом
+	//login и password - наши логин и пароль для входа в инстаграм. Можно ввести только один раз и сохранить в cookie
+	//InstaStart(goddIDs string, login string, password string) запускает функцию постинга товаров в инстаграм,
+	//в процессе скачивает изображение товара с сайта AVON во временный файл, после поста файл удаляется
+	//для использования раскомментировать все 4 строчки
+	//goddIDs:="1386829 1401001 1420694 94679 22375 1387176 1313782 1358737 1379088 49003 1457171 26640 1419764 14434 1441347 68782 20801 1409747 67604 1327226 1444822 1370547 1400305 1404669"
+	//login:="instagram.login"
+	//password:="instagram.password"
+	//InstaStart(goddIDs, login, password)
+
 	cancel2()
 	cancel1()
-	//недописанная функция для размещения заказа
-	//AvonStart()
 
-	//показывает количество товаров по категориям в бд
+	//AvonStart(login string, password string) недописанная функция для размещения заказа, пусть будет
+	//avonlogin:="login"
+	//avonpassword:="password"
+	//AvonStart(avonlogin,avonpassword)
+
+	//DBShowByCategoryCount() показывает количество товаров по категориям в БД, для использования раскомментировать
 	//DBShowByCategoryCount()
-	//показывает все товары по введенной категории
+
+	//ShowCategory(category string) показывает все товары введенной категории в БД, для использования раскомментировать
 	//ShowCategory("Ср-ва личной гигиены")
-	//показывает отдельный товар по коду из каталога
-	//ShowGood(DBGetGood("1421442"))
+
+	//ShowGood(goodid string) показывает отдельный товар по коду из БД, для использования раскомментировать
+	//ShowGood("1421442")
 	time.Sleep(10*time.Minute)
 }
